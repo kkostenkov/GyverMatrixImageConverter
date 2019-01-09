@@ -70,7 +70,7 @@
             // 
             // pictureBox1
             // 
-            this.pictureBox1.Location = new System.Drawing.Point(154, 12);
+            this.pictureBox1.Location = new System.Drawing.Point(154, 31);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(150, 150);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -79,7 +79,7 @@
             // 
             // convertSingleButton
             // 
-            this.convertSingleButton.Location = new System.Drawing.Point(32, 213);
+            this.convertSingleButton.Location = new System.Drawing.Point(33, 213);
             this.convertSingleButton.Name = "convertSingleButton";
             this.convertSingleButton.Size = new System.Drawing.Size(99, 34);
             this.convertSingleButton.TabIndex = 8;
@@ -91,7 +91,7 @@
             // 
             this.convertFolderButton.Location = new System.Drawing.Point(154, 213);
             this.convertFolderButton.Name = "convertFolderButton";
-            this.convertFolderButton.Size = new System.Drawing.Size(140, 34);
+            this.convertFolderButton.Size = new System.Drawing.Size(148, 34);
             this.convertFolderButton.TabIndex = 9;
             this.convertFolderButton.Text = "Конвертировать все файлы в папке";
             this.convertFolderButton.UseVisualStyleBackColor = true;
@@ -134,7 +134,7 @@
             this.groupBox1.Controls.Add(this.arrayName);
             this.groupBox1.Location = new System.Drawing.Point(24, 148);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(120, 59);
+            this.groupBox1.Size = new System.Drawing.Size(124, 59);
             this.groupBox1.TabIndex = 13;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Название массива";
@@ -149,6 +149,7 @@
             // 
             // matrixSizeBack
             // 
+            this.matrixSizeBack.AutoSize = true;
             this.matrixSizeBack.Controls.Add(this.customMatrixMultLabel);
             this.matrixSizeBack.Controls.Add(this.customMatrixX);
             this.matrixSizeBack.Controls.Add(this.customMatrixY);
@@ -326,7 +327,7 @@
             // gyverLink
             // 
             this.gyverLink.AutoSize = true;
-            this.gyverLink.Location = new System.Drawing.Point(335, 243);
+            this.gyverLink.Location = new System.Drawing.Point(42, 266);
             this.gyverLink.Name = "gyverLink";
             this.gyverLink.Size = new System.Drawing.Size(64, 13);
             this.gyverLink.TabIndex = 3;
@@ -337,7 +338,7 @@
             // githubLink
             // 
             this.githubLink.AutoSize = true;
-            this.githubLink.Location = new System.Drawing.Point(445, 243);
+            this.githubLink.Location = new System.Drawing.Point(186, 266);
             this.githubLink.Name = "githubLink";
             this.githubLink.Size = new System.Drawing.Size(79, 13);
             this.githubLink.TabIndex = 19;
@@ -347,7 +348,9 @@
             // 
             // Form1
             // 
-            this.ClientSize = new System.Drawing.Size(567, 279);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.ClientSize = new System.Drawing.Size(556, 288);
             this.Controls.Add(this.githubLink);
             this.Controls.Add(this.gyverLink);
             this.Controls.Add(this.manualConverterBox);
