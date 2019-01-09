@@ -22,6 +22,12 @@ public class ColorCutter
         var fileWidth = bitmap.Width;
         var fileHeight = bitmap.Height;
 
+        if (fileWidth < width || fileHeight < height)
+        {
+            error = "Image is too small";
+            return null;
+        }
+
         int[][] result = new int[height][];
         
         for (int y = 0; y < height; y++)

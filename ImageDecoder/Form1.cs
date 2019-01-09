@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using System.Drawing;
-using System.Linq;
+using System.Diagnostics;
 using System.Windows.Forms;
 using System.IO;
 
@@ -26,17 +25,18 @@ namespace ImageDecoder
         private void convertSingleButton_Click(object sender, EventArgs e)
         {
             var filePath = ioHandler.SelectFile();
-            
-            var sidePixelCount = 8;
+
+            var matrixSize = GetMatrixSize();
             string error;
-            var encodedImage = ColorCutter.EncodeImage(filePath, sidePixelCount, sidePixelCount, out error);
+            var encodedImage = ColorCutter.EncodeImage(filePath, matrixSize[0], matrixSize[1], out error);
             if (!string.IsNullOrEmpty(error) || encodedImage == null)
             {
-                MessageBox.Show(error, "Error", MessageBoxButtons.OK);
+                ShowErrorNotification(error);
                 return;
             }
             var sb = new StringBuilder();
-            ioHandler.EncodeAndAddAsText(encodedImage, "frame00", sb);
+            var arrayElementName = string.Format("{0}00", GetArrayPrefixName());
+            ioHandler.EncodeAndAddAsText(encodedImage, arrayElementName, sb);
             ioHandler.SaveToFile(sb);
             pictureBox1.Image = TestImagesStorage.DecodeImage(encodedImage);
         }
@@ -57,19 +57,20 @@ namespace ImageDecoder
             }
             MessageBox.Show("Files found: " + foundFiles.Count.ToString(), "Message");
 
-            var sidePixelCount = 8;
+            var matrixSize = GetMatrixSize();
             string error;
             var sb = new StringBuilder();
+            var arrayElementPrefix = GetArrayPrefixName();
             for (int i = 0; i < foundFiles.Count; i++)
             {
                 var filePath = foundFiles[i];
-                var encodedImage = ColorCutter.EncodeImage(filePath, sidePixelCount, sidePixelCount, out error);
+                var encodedImage = ColorCutter.EncodeImage(filePath, matrixSize[0], matrixSize[1], out error);
                 if (!string.IsNullOrEmpty(error) || encodedImage == null)
                 {
-                    MessageBox.Show(error, "Error", MessageBoxButtons.OK);
+                    ShowErrorNotification(error);
                     continue;
                 }
-                var fileName = string.Format("frame{0}", i); 
+                var fileName = string.Format("{0}{1}", arrayElementPrefix, i); 
                 ioHandler.EncodeAndAddAsText(encodedImage, fileName, sb);
                 
             }
@@ -78,7 +79,7 @@ namespace ImageDecoder
             //pictureBox1.Image = TestImagesStorage.DecodeImage(encodedImage);
         }
 
-
+        // Shows palette to choose color
         private void manualPaletteTo16input_Click(object sender, EventArgs e)
         {
             // Show the color dialog.
@@ -91,6 +92,7 @@ namespace ImageDecoder
             }
         }
 
+        // Converts all manual inputs
         private void manualConvertButton_Click(object sender, EventArgs e)
         {
             // 24->16
@@ -139,7 +141,74 @@ namespace ImageDecoder
 
         private void ShowExceptionNotification(Exception e)
         {
-            MessageBox.Show(e.Message, "Exception");
+            MessageBox.Show(e.Message, "Exception", MessageBoxButtons.OK);
+        }
+
+        private void ShowErrorNotification(string errorMsg)
+        {
+            MessageBox.Show(errorMsg, "Error", MessageBoxButtons.OK);
+        }
+
+        private const string DEFAULT_ARRAY_PREFIX = "frame";
+        // Some basic validation of user input
+        private string GetArrayPrefixName()
+        {
+            var userArrayNameInput = arrayName.Text;
+            if (string.IsNullOrEmpty(userArrayNameInput))
+            {
+                return DEFAULT_ARRAY_PREFIX;
+            }
+            else if (!char.IsLetter(userArrayNameInput[0]))
+            {
+                ShowErrorNotification("Array name should start from letter");
+                userArrayNameInput = "z" + userArrayNameInput;
+            }
+            return userArrayNameInput;
+        }
+
+        private int[] GetMatrixSize()
+        {
+            int x = 0, y = 0;
+            if (matrix16by16.Checked)
+            {
+                x = 16; y = 16;
+            }
+            else if (matrix8by8.Checked)
+            {
+                x = 8; y = 8;
+            }
+            else
+            {
+                bool inputParsed = true;
+                if (!Int32.TryParse(customMatrixX.Text, out x))
+                {
+                    inputParsed = false;
+                    x = 16;
+                }
+                if (!Int32.TryParse(customMatrixY.Text, out y))
+                {
+                    inputParsed = false;
+                    y = 16;
+                }
+                if (!inputParsed)
+                {
+                    ShowErrorNotification("Unknown matrix size");
+                }
+            }
+            var result = new int[2] { x, y };
+            return result;
+        }
+
+        private void gyverLink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            ProcessStartInfo sInfo = new ProcessStartInfo("http:/alexgyver.ru/");
+            Process.Start(sInfo);
+        }
+
+        private void githubLink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            ProcessStartInfo sInfo = new ProcessStartInfo("https://github.com/kkostenkov/GyverMatrixImageConverter/");
+            Process.Start(sInfo);
         }
     }
 }

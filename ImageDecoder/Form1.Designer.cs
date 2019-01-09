@@ -35,7 +35,7 @@
             this.matrix8by8 = new System.Windows.Forms.RadioButton();
             this.matrixCustomSize = new System.Windows.Forms.RadioButton();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.textBox3 = new System.Windows.Forms.TextBox();
+            this.arrayName = new System.Windows.Forms.TextBox();
             this.matrixSizeBack = new System.Windows.Forms.GroupBox();
             this.customMatrixMultLabel = new System.Windows.Forms.Label();
             this.customMatrixX = new System.Windows.Forms.TextBox();
@@ -130,7 +130,7 @@
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.textBox3);
+            this.groupBox1.Controls.Add(this.arrayName);
             this.groupBox1.Location = new System.Drawing.Point(24, 148);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(120, 59);
@@ -138,13 +138,13 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Название массива";
             // 
-            // textBox3
+            // arrayName
             // 
-            this.textBox3.Location = new System.Drawing.Point(11, 24);
-            this.textBox3.Name = "textBox3";
-            this.textBox3.Size = new System.Drawing.Size(83, 20);
-            this.textBox3.TabIndex = 21;
-            this.textBox3.Text = "frame";
+            this.arrayName.Location = new System.Drawing.Point(11, 24);
+            this.arrayName.Name = "arrayName";
+            this.arrayName.Size = new System.Drawing.Size(83, 20);
+            this.arrayName.TabIndex = 21;
+            this.arrayName.Text = "frame";
             // 
             // matrixSizeBack
             // 
@@ -331,6 +331,7 @@
             this.gyverLink.TabIndex = 3;
             this.gyverLink.TabStop = true;
             this.gyverLink.Text = "alexgyver.ru";
+            this.gyverLink.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.gyverLink_LinkClicked);
             // 
             // githubLink
             // 
@@ -341,6 +342,7 @@
             this.githubLink.TabIndex = 19;
             this.githubLink.TabStop = true;
             this.githubLink.Text = "Исходный код";
+            this.githubLink.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.githubLink_LinkClicked);
             // 
             // Form1
             // 
@@ -385,7 +387,7 @@
         private System.Windows.Forms.Label customMatrixMultLabel;
         private System.Windows.Forms.TextBox customMatrixX;
         private System.Windows.Forms.TextBox customMatrixY;
-        private System.Windows.Forms.TextBox textBox3;
+        private System.Windows.Forms.TextBox arrayName;
         private System.Windows.Forms.GroupBox manualConverterBox;
         private System.Windows.Forms.GroupBox manualPaletteTo16;
         private System.Windows.Forms.Label label4;
