@@ -37,6 +37,8 @@ namespace ImageDecoder
             var sb = new StringBuilder();
             var arrayElementName = string.Format("{0}00", GetArrayPrefixName());
             ioHandler.EncodeAndAddAsText(encodedImage, arrayElementName, sb);
+            var arrayElementNames = new List<string>() { arrayElementName };
+            ioHandler.AddArrayDeclaration(sb, arrayElementNames);
             ioHandler.SaveToFile(sb);
             pictureBox1.Image = TestImagesStorage.DecodeImage(encodedImage);
         }
@@ -61,6 +63,7 @@ namespace ImageDecoder
             string error;
             var sb = new StringBuilder();
             var arrayElementPrefix = GetArrayPrefixName();
+            var arrayElementNames = new List<string>();
             for (int i = 0; i < foundFiles.Count; i++)
             {
                 var filePath = foundFiles[i];
@@ -70,10 +73,12 @@ namespace ImageDecoder
                     ShowErrorNotification(error);
                     continue;
                 }
-                var fileName = string.Format("{0}{1}", arrayElementPrefix, i); 
+                var fileName = string.Format("{0}{1}", arrayElementPrefix, i);
+                arrayElementNames.Add(fileName);
                 ioHandler.EncodeAndAddAsText(encodedImage, fileName, sb);
                 
             }
+            ioHandler.AddArrayDeclaration(sb, arrayElementNames);
             ioHandler.SaveToFile(sb);
 
             //pictureBox1.Image = TestImagesStorage.DecodeImage(encodedImage);
@@ -194,6 +199,8 @@ namespace ImageDecoder
                 {
                     ShowErrorNotification("Unknown matrix size");
                 }
+                x = Math.Max(1, x);
+                y = Math.Max(1, y);
             }
             var result = new int[2] { x, y };
             return result;

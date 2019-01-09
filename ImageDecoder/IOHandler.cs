@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Text;
 using System.Windows.Forms;
 
@@ -50,8 +51,8 @@ namespace ImageDecoder
             var header = "const uint16_t {0}[][{1}] PROGMEM = ";
             sb.Append(string.Format(header, imageName, image[0].Length));
             sb.AppendLine("{");
-            var width = image.Length;
-            var height = image[0].Length;
+            var width = image[0].Length;
+            var height = image.Length;
             for (int y = 0; y < height; y++)
             {
                 sb.Append("  {");
@@ -69,7 +70,26 @@ namespace ImageDecoder
             }
             sb.AppendLine("};");
             sb.AppendLine();
+        }
 
+        internal void AddArrayDeclaration(StringBuilder sb, List<string> names)
+        {
+            //const uint16_t framesArray[4] = { frame00, frame01, frame02, frame03};
+            var arrayOpening = string.Format("const uint16_t framesArray[{0}] = ", names.Count);
+            sb.Append(arrayOpening);
+            sb.AppendLine("  {");
+            for (int i = 0; i < names.Count; i++)
+            {
+                sb.Append(names[i]);
+                if (i < names.Count - 1) // not last line
+                {
+                    sb.Append(", ");
+                }
+                if (i % 10 == 9)
+                    sb.AppendLine();
+
+            }
+            sb.AppendLine("};");
         }
 
         public void SaveToFile(StringBuilder sb)

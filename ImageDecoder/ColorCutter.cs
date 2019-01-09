@@ -22,22 +22,33 @@ public class ColorCutter
         var fileWidth = bitmap.Width;
         var fileHeight = bitmap.Height;
 
-        if (fileWidth < width || fileHeight < height)
-        {
-            error = "Image is too small";
-            return null;
-        }
 
         int[][] result = new int[height][];
-        
-        for (int y = 0; y < height; y++)
+        try
         {
-            result[y] = new int[width];
-            for (int x = 0; x < width; x++)
+            float picStepX = (float)fileWidth / width;
+            float picStepY = (float)fileHeight / height;
+            for (int y = 0; y < height; y++)
             {
-                Color pixelColor = bitmap.GetPixel(x, y);
-                result[y][x] = ShrinkColor(pixelColor.ToArgb());
+                result[y] = new int[width];
+                for (int x = 0; x < width; x++)
+                {
+                    var pixX = (int)Math.Floor(picStepX * x);
+                    var picY = (int)Math.Floor(picStepY * y);
+                    Color pixelColor = bitmap.GetPixel(pixX, picY);
+                    result[y][x] = ShrinkColor(pixelColor.ToArgb());
+                }
             }
+        }
+        catch (IndexOutOfRangeException outOfRange)
+        {
+            error = "Image is too small or too big. Or matrix size is incorrect";
+            return null;
+        }
+        catch (Exception exc)
+        {
+            error = string.Format("Something went wrong in encoding. {0}", exc.Message);
+            return null;
         }
         error = string.Empty;
         return result;

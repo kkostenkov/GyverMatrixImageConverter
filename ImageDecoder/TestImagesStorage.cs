@@ -7,8 +7,8 @@ namespace ImageDecoder
         internal static Bitmap DecodeImage(int[][] encodedImage)
         {
             
-            var width = encodedImage.Length;
-            var height = encodedImage[0].Length;
+            var width = encodedImage[0].Length;
+            var height = encodedImage.Length;
             var scale = 2;
             if (width <= 16)
                 scale = 16;
@@ -33,14 +33,14 @@ namespace ImageDecoder
         internal static Bitmap GetMarioImage()
         {
             var scale = 32;
-            var width = marioPixels.Length;
-            var height = marioPixels[0].Length;
+            var width = marioPixels[0].Length;
+            var height = marioPixels.Length;
             var result = new Bitmap(width * scale, height * scale);
             for (int y = 0; y < height; y++)
             {
                 for (int x = 0; x < width; x++)
                 {
-                    var colorInt = marioPixels[x][y];
+                    var colorInt = marioPixels[y][x];
                     var colorLong = ColorCutter.ExpandColor(colorInt);
                     Color color = Color.FromArgb(colorLong);
                     color = Color.FromArgb(255, color);
