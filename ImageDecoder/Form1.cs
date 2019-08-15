@@ -35,10 +35,11 @@ namespace ImageDecoder
                 return;
             }
             var sb = new StringBuilder();
-            var arrayElementName = string.Format("{0}00", GetArrayPrefixName());
+            var arrayPrefixName = GetArrayPrefixName();
+            var arrayElementName = string.Format("{0}00", arrayPrefixName);
             ioHandler.EncodeAndAddAsText(encodedImage, arrayElementName, sb);
             var arrayElementNames = new List<string>() { arrayElementName };
-            ioHandler.AddArrayDeclaration(sb, arrayElementNames);
+            ioHandler.AddArrayDeclaration(sb, arrayPrefixName, arrayElementNames);
             ioHandler.SaveToFile(sb);
             pictureBox1.Image = TestImagesStorage.DecodeImage(encodedImage);
         }
@@ -78,71 +79,12 @@ namespace ImageDecoder
                 ioHandler.EncodeAndAddAsText(encodedImage, fileName, sb);
                 
             }
-            ioHandler.AddArrayDeclaration(sb, arrayElementNames);
+            ioHandler.AddArrayDeclaration(sb, arrayElementPrefix, arrayElementNames);
             ioHandler.SaveToFile(sb);
 
             //pictureBox1.Image = TestImagesStorage.DecodeImage(encodedImage);
         }
 
-        // Shows palette to choose color
-        private void manualPaletteTo16input_Click(object sender, EventArgs e)
-        {
-            // Show the color dialog.
-            DialogResult result = colorDialog1.ShowDialog();
-            // See if user pressed ok.
-            if (result == DialogResult.OK)
-            {
-                // Set form background to the selected color.
-                manualPaletteTo16input.BackColor = colorDialog1.Color;
-            }
-        }
-
-        // Converts all manual inputs
-        private void manualConvertButton_Click(object sender, EventArgs e)
-        {
-            // 24->16
-            var expandedColorText = manual24to16input.Text;
-            if (!expandedColorText.StartsWith("0x"))
-                expandedColorText = "0x" + expandedColorText;
-            int expandedColorInt = 0;
-            try
-            {
-                expandedColorInt = Convert.ToInt32(expandedColorText, 16);
-                var shrinkedColor = ColorCutter.ShrinkColor(expandedColorInt);
-                
-                manual24to16output.Text = string.Format("0x{0}", shrinkedColor.ToString("X4"));
-            }
-            catch (Exception exc)
-            {
-                ShowExceptionNotification(exc);
-            }
-
-            // Palette -> 16
-            try
-            {
-                var manualPaletteColor = manualPaletteTo16input.BackColor.ToArgb();   
-                var shrinkedColor = ColorCutter.ShrinkColor(manualPaletteColor);
-                manualPaletteTo16output.Text = string.Format("0x{0}", shrinkedColor.ToString("X4"));
-            }
-            catch (Exception exc)
-            {
-                ShowExceptionNotification(exc);
-            }
-
-            // 16 -> 24
-            var color16text = manual16To24input.Text;
-            var colorInt = 0;
-            try
-            {
-                colorInt = Convert.ToInt32(color16text, 16);
-                var expandedColor = ColorCutter.ExpandColor(colorInt);
-                manual16To24output.Text = "0x" + expandedColor.ToString("x");
-            }
-            catch (Exception exc)
-            {
-                ShowExceptionNotification(exc);
-            }      
-        }
 
         private void ShowExceptionNotification(Exception e)
         {
