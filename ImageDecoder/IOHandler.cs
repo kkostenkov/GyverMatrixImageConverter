@@ -75,7 +75,7 @@ namespace ImageDecoder
         internal void AddArrayDeclaration(StringBuilder sb, string arrayName, List<string> names)
         {
             //const uint16_t* const framesArray1[4] PROGMEM = { frame00, frame01, frame02, frame03 };
-            var arrayOpening = string.Format("const uint16_t* const {0}_array[{1}] = ", arrayName, names.Count);
+            var arrayOpening = string.Format("const uint16_t* const {0}_array[{1}] PROGMEM = ", arrayName, names.Count);
             sb.Append(arrayOpening);
             sb.AppendLine("  {");
             for (int i = 0; i < names.Count; i++)
